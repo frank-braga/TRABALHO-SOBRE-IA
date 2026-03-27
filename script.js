@@ -1,151 +1,272 @@
-const caixaPrincipal = document.querySelector(".caixa-principal");
-const caixaPerguntas = document.querySelector(".caixa-perguntas");
-const caixaAlternativas = document.querySelector(".caixa-alternativas");
-const caixaResultado = document.querySelector(".caixa-resultado");
-const textoResultado = document.querySelector(".texto-resultado");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-const perguntas = [
-    {
-        enunciado: "Assim que saiu da escola você se depara com uma nova tecnologia, um chat que consegue responder todas as dúvidas que uma pessoa pode ter, ele também gera imagens e áudios hiper-realistas. Qual o primeiro pensamento?",
-        alternativas: [
-            {
-                texto: "Isso é assustador!",
-                afirmacao: "Gabriel inicialmente ficou preocupado com os possíveis impactos negativos dessa tecnologia. "
-            },
-            {
-                texto: "Isso é maravilhoso!",
-                afirmacao: "Gabriel ficou fascinado e quis explorar todas as possibilidades da IA no seu dia a dia."
-            }
-        ]
-    },
-    {
-        enunciado: "Com a descoberta desta tecnologia, chamada Inteligência Artificial, uma professora de tecnologia da escola decidiu fazer uma sequência de aulas sobre esta tecnologia. No fim de uma aula ela pede que você escreva um trabalho sobre o uso de IA em sala de aula. Qual atitude você toma?",
-        alternativas: [
-            {
-                texto: "Utiliza uma ferramenta de busca na internet que utiliza IA para que ela ajude a encontrar informações relevantes para o trabalho e explique numa linguagem que facilite o entendimento.",
-                afirmacao: "Gabriel aprendeu a usar a IA como ferramenta de pesquisa, otimizando seu tempo e aprofundando seu conhecimento."
-            },
-            {
-                texto: "Escreve o trabalho com base nas conversas que teve com colegas, algumas pesquisas na internet e conhecimentos próprios sobre o tema.",
-                afirmacao: "Gabriel preferiu usar seus próprios recursos e conhecimentos, desenvolvendo suas habilidades de pesquisa e análise crítica."
-            }
-        ]
-    },
-    {
-        enunciado: "Após a elaboração do trabalho escrito, a professora realizou um debate entre a turma para entender como foi realizada a pesquisa e escrita. Nessa conversa também foi levantado um ponto muito importante: como a IA impacta o trabalho do futuro. Nesse debate, como você se posiciona?",
-        alternativas: [
-            {
-                texto: "Defende a ideia de que a IA pode criar novas oportunidades de emprego e melhorar habilidades humanas.",
-                afirmacao: "Gabriel se tornou um entusiasta da inovação, buscando constantemente novas formas de integrar IA de maneira ética e produtiva."
-            },
-            {
-                texto: "Me preocupo com as pessoas que perderão seus empregos para máquinas e defendem a importância de proteger os trabalhadores.",
-                afirmacao: "Gabriel desenvolveu uma consciência social e criou um grupo de estudos para discutir o uso ético da IA e a proteção dos trabalhadores."
-            }
-        ]
-    },
-    {
-        enunciado: "Ao final da discussão, você precisou criar uma imagem no computador que representasse o que pensa sobre IA. E agora?",
-        alternativas: [
-            {
-                texto: "Criar uma imagem utilizando uma plataforma de design tradicional como o Paint ou Photoshop.",
-                afirmacao: "Gabriel compartilhou seus conhecimentos de design digital com iniciantes, mostrando que ferramentas tradicionais ainda têm seu valor."
-            },
-            {
-                texto: "Criar uma imagem utilizando um gerador de imagem de IA.",
-                afirmacao: "Gabriel dominou as ferramentas de geração de imagem por IA e agora ajuda outras pessoas a expressarem sua criatividade digitalmente."
-            }
-        ]
-    },
-    {
-        enunciado: "Você tem um trabalho em grupo de biologia para entregar na semana seguinte, o andamento do trabalho está um pouco atrasado e uma pessoa do seu grupo decidiu fazer com ajuda da IA. O problema é que o trabalho está totalmente igual ao do chat. O que você faz?",
-        alternativas: [
-            {
-                texto: "Aceita usar o texto gerado pela IA como trabalho final, pois foi uma contribuição válida.",
-                afirmacao: "Gabriel aprendeu uma lição importante sobre os limites da IA e agora busca equilíbrio entre tecnologia e desenvolvimento pessoal."
-            },
-            {
-                texto: "Revisa o trabalho, adiciona perspectivas pessoais e discute com o grupo sobre a importância do pensamento crítico.",
-                afirmacao: "Gabriel se tornou um defensor do uso consciente da IA, sempre revisando e personalizando os resultados gerados pelas máquinas."
-            }
-        ]
-    }
-];
-
-let atual = 0;
-let perguntaAtual;
-let historiaFinal = "";
-
-function mostraPergunta() {
-    if (atual >= perguntas.length) {
-        mostraResultado();
-        return;
-    }
-    perguntaAtual = perguntas[atual];
-    caixaPerguntas.textContent = perguntaAtual.enunciado;
-    caixaAlternativas.textContent = "";
-    mostraAlternativas();
+:root {
+    --cor-fundo: #0a2f1f;
+    --cor-principal: #1a472a;
+    --cor-secundaria: #2d5a3b;
+    --cor-destaque: #FFD700;
+    --cor-texto: #FFFFFF;
+    --cor-campo: #228B22;
+    --cor-bola: #2C2C2C;
 }
 
-function mostraAlternativas() {
-    for (const alternativa of perguntaAtual.alternativas) {
-        const botaoAlternativas = document.createElement("button");
-        botaoAlternativas.textContent = alternativa.texto;
-        botaoAlternativas.addEventListener("click", () => respostaSelecionada(alternativa));
-        caixaAlternativas.appendChild(botaoAlternativas);
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a472a 0%, #0a2f1f 50%, #0b3b2a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/grass-texture.png');
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2d5a3b;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FFD700;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #FFC800;
+}
+
+.caixa-principal {
+    background-color: var(--cor-principal);
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    padding: 30px;
+    border-radius: 25px;
+    border: 3px solid var(--cor-destaque);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: borderGlow 2s infinite alternate;
+    position: relative;
+    backdrop-filter: blur(2px);
+}
+
+@keyframes borderGlow {
+    0% {
+        border-color: #FFD700;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    100% {
+        border-color: #FFA500;
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
     }
 }
 
-function respostaSelecionada(opcaoSelecionada) {
-    const afirmacoes = opcaoSelecionada.afirmacao;
-    historiaFinal += afirmacoes + " ";
-    atual++;
-    mostraPergunta();
+.caixa-principal::before {
+    content: "⚽";
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    font-size: 40px;
+    opacity: 0.3;
 }
 
-function mostraResultado() {
-    caixaPerguntas.textContent = "🌟 Em 2049, Gabriel... 🌟";
-    textoResultado.textContent = historiaFinal + "\n\n✨ A jornada de Gabriel mostra que o futuro da IA está nas mãos de quem sabe usá-la com sabedoria, ética e criatividade! ✨";
-    caixaAlternativas.textContent = "";
+.caixa-principal::after {
+    content: "⚽";
+    position: absolute;
+    bottom: -15px;
+    right: -15px;
+    font-size: 40px;
+    opacity: 0.3;
+}
+
+h1 {
+    color: var(--cor-destaque);
+    font-size: 2.5em;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+h2 {
+    color: var(--cor-texto);
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.caixa-perguntas {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    border-radius: 20px;
+    margin: 20px 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    line-height: 1.5;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.caixa-alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+button {
+    background: linear-gradient(135deg, #2d5a3b 0%, #1a472a 100%);
+    color: var(--cor-texto);
+    border: 2px solid var(--cor-destaque);
+    border-radius: 50px;
+    padding: 15px 25px;
+    margin: 5px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #1a472a;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: white;
+}
+
+.caixa-resultado {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 20px;
+    border-left: 5px solid var(--cor-destaque);
+}
+
+.texto-resultado {
+    color: var(--cor-texto);
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.relogio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.relogio div {
+    height: 120px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--cor-destaque);
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    border-bottom: 3px solid var(--cor-destaque);
+}
+
+.relogio span {
+    font-weight: bold;
+    font-size: 45px;
+}
+
+.relogio span.tempo {
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+footer a {
+    margin: 5px;
+    text-align: center;
+    color: var(--cor-destaque);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer a:hover {
+    transform: translateY(-5px);
+}
+
+footer img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+}
+
+footer a:hover img {
+    filter: brightness(0) invert(0.8) sepia(1) hue-rotate(40deg) saturate(5);
+}
+
+footer p {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+p:hover {
+    color: var(--cor-destaque);
+}
+
+@media (max-width: 600px) {
+    .caixa-principal {
+        padding: 20px;
+    }
     
-    // Adiciona um botão para reiniciar o quiz
-    const botaoReiniciar = document.createElement("button");
-    botaoReiniciar.textContent = "🔄 Recomeçar Jornada";
-    botaoReiniciar.style.marginTop = "20px";
-    botaoReiniciar.addEventListener("click", () => {
-        atual = 0;
-        historiaFinal = "";
-        mostraPergunta();
-        caixaResultado.style.display = "none";
-        caixaPerguntas.style.display = "block";
-        caixaAlternativas.style.display = "flex";
-    });
-    caixaAlternativas.appendChild(botaoReiniciar);
-    caixaResultado.style.display = "block";
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    .relogio div {
+        height: 90px;
+        width: 70px;
+    }
+    
+    .relogio span {
+        font-size: 30px;
+    }
+    
+    button {
+        padding: 12px 20px;
+        font-size: 0.9em;
+    }
 }
-
-// Relógio Digital
-const horas = document.getElementById('horas');
-const minutos = document.getElementById('minutos');
-const segundos = document.getElementById('segundos');
-
-function atualizarRelogio() {
-    let dateToday = new Date();
-    let hr = dateToday.getHours();
-    let min = dateToday.getMinutes();
-    let s = dateToday.getSeconds();
-
-    hr = hr < 10 ? '0' + hr : hr;
-    min = min < 10 ? '0' + min : min;
-    s = s < 10 ? '0' + s : s;
-
-    horas.textContent = hr;
-    minutos.textContent = min;
-    segundos.textContent = s;
-}
-
-setInterval(atualizarRelogio, 1000);
-atualizarRelogio();
-
-// Iniciar o quiz
-mostraPergunta();
